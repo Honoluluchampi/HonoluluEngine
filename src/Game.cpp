@@ -4,13 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <algorithm>
-#include "Field.h"
-#include "TBPlayer.h"
-#include "TurnManager.h"
-#include "Path.h"
 #include <iostream>
-#include "Bomb.h"
-#include "Players.h"
 
 Game::Game()
 :mWindow(nullptr), mRenderer(nullptr), mIsRunning(true), mUpdatingActors(false)

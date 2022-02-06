@@ -1,24 +1,21 @@
-TARGET 		= timebomb
-SRCROOT 	= ./source
+TARGET 		= HonoluluEngine.dylib
+TARGETDIR	= ./lib
+SRCROOT 	= ./src
 SOURCES 	= $(wildcard $(SRCROOT)/*.cpp)
 SDL2DIR 	= /usr/local/Cellar/sdl2/2.0.14_1
 SDL2IMAGEDIR = /usr/local/Cellar/sdl2_image/2.0.5
-
 COMPILER  	= g++
-CFLAGS    	= -Wall -std=c++17 -MMD -MP -g3
-ifeq "$(shell getconf LONG_BIT)" "64"
-  LDFLAGS 	= $(SDL2IMAGEDIR)/lib/libSDL2_image-2.0.0.dylib $(SDL2DIR)/lib/libSDL2-2.0.0.dylib
-else
-  LDFLAGS 	=
-endif
-LIBS      	= 
-INCLUDE   	= -I$(SDL2IMAGEDIR)/include -I$(SDL2DIR)/include -I./**
+CFLAGS    	= -Wall -std=c++20 -MMD -MP -g3
+LDFLAGS 	= -dynamiclib
+LIBS      	= -L$(SDL2IMAGEDIR)/lib -lSDL2_image-2.0.0 -L$(SDL2DIR)/lib -lSDL2-2.0.0
+INCLUDE   	= -I$(SDL2IMAGEDIR)/include -I$(SDL2DIR)/include -I./include
 OBJROOT 	= ./obj
 OBJECTS 	= $(addprefix $(OBJROOT)/, $(notdir $(SOURCES:.cpp=.o)))
 DEPENDS   	= $(OBJECTS:.o=.d)
 
-$(TARGET): $(OBJECTS) $(LIBS)
-	$(COMPILER) -o $@ $^ $(LDFLAGS)
+$(TARGETDIR)/$(TARGET): $(OBJECTS)
+	-mkdir -p $(TARGETDIR)
+	$(COMPILER) $(LDFLAGS) -o $@ $^ $(LIBS)
 
 $(OBJROOT)/%.o: $(SRCROOT)/%.cpp
 	-mkdir -p $(OBJROOT)
@@ -27,7 +24,6 @@ $(OBJROOT)/%.o: $(SRCROOT)/%.cpp
 all: clean $(TARGET)
 
 clean:
-	-rm -r $(OBJROOT)
-	-rm -f $(notdir $(TARGET)) $(DEPENDS) 
+	-rm -r $(OBJROOT) $(TARGETDIR)
 
 -include $(DEPENDS)
