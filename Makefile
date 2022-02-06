@@ -1,5 +1,5 @@
-TARGET 		= HonoluluEngine.dylib
-TARGETDIR	= ./lib
+TARGET 		= libHonoluluEngine.dylib
+TARGETDIR	= /usr/local/lib
 SRCROOT 	= ./src
 SOURCES 	= $(wildcard $(SRCROOT)/*.cpp)
 SDL2DIR 	= /usr/local/Cellar/sdl2/2.0.14_1
@@ -24,6 +24,6 @@ $(OBJROOT)/%.o: $(SRCROOT)/%.cpp
 all: clean $(TARGET)
 
 clean:
-	-rm -r $(OBJROOT) $(TARGETDIR)
+	-rm -r $(OBJROOT) $(TARGETDIR)/$(TARGET)
 
 -include $(DEPENDS)
